@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const data = {
-    plant_id: "plant_1",
-    soil_moisture: Math.floor(Math.random() * 100),
-    temperature: (20 + Math.random() * 10).toFixed(1),
-    humidity: Math.floor(40 + Math.random() * 40),
-    timestamp: new Date().toISOString(),
-  };
+  try {
+    const res = await fetch("https://pmiot-backend-ewb7g7aab9a3fdac.centralindia-01.azurewebsites.net/api/data");
 
-  return NextResponse.json(data);
+    const data = await res.json();
+
+    return Response.json(data);
+  } catch (error) {
+    return Response.json({ error: "Failed to fetch backend" }, { status: 500 });
+  }
 }

@@ -6,14 +6,24 @@ import SensorCard from "./sensorcard";
 export default function Dashboard() {
   const [data, setData] = useState<any>(null);
 
-  const fetchData = async () => {
-    const res = await fetch("https://pmiot-backend-ewb7g7aab9a3fdac.centralindia-01.azurewebsites.net/api/data");
+const fetchData = async () => {
+  try {
+    const res = await fetch("/api/plant_data");
+
+    if (!res.ok) throw new Error("HTTP error");
+
     const json = await res.json();
-    const latest = json[json.length - 1];
+
+    const latest = Array.isArray(json)
+      ? json[json.length - 1]
+      : json;
 
     setData(latest);
 
-  };
+  } catch (err) {
+    console.error("Fetch failed:", err);
+  }
+};
 
   useEffect(() => {
     fetchData();
@@ -26,9 +36,9 @@ export default function Dashboard() {
   return (
     <div className="grid md:grid-cols-3 gap-6">
       <SensorCard
-        title="Soil Moisture"
+        title="Soil Resistance"
         value={data.soilRaw}
-        unit="%"
+        unit=""
         color="bg-blue-500"
       />
 
