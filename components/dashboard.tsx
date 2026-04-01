@@ -7,9 +7,12 @@ export default function Dashboard() {
   const [data, setData] = useState<any>(null);
 
   const fetchData = async () => {
-    const res = await fetch("/api/plant_data");
+    const res = await fetch("https://pmiot-backend-ewb7g7aab9a3fdac.centralindia-01.azurewebsites.net/api/data");
     const json = await res.json();
-    setData(json);
+    const latest = json[json.length - 1];
+
+    setData(latest);
+
   };
 
   useEffect(() => {
@@ -24,14 +27,21 @@ export default function Dashboard() {
     <div className="grid md:grid-cols-3 gap-6">
       <SensorCard
         title="Soil Moisture"
-        value={data.soil_moisture}
+        value={data.soilRaw}
         unit="%"
         color="bg-blue-500"
       />
 
       <SensorCard
+        title="Soil Moisture Percent"
+        value={data.soilPercent}
+        unit="%"
+        color="bg-yellow-500"
+      />
+
+      <SensorCard
         title="Temperature"
-        value={data.temperature}
+        value={data.temp}
         unit="°C"
         color="bg-red-500"
       />
@@ -41,6 +51,13 @@ export default function Dashboard() {
         value={data.humidity}
         unit="%"
         color="bg-green-500"
+      />
+
+      <SensorCard
+        title="Timestamp"
+        value={data.timestamp}
+        unit=""
+        color="bg-purple-500"
       />
     </div>
   );
