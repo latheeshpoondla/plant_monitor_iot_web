@@ -69,6 +69,13 @@ const fetchData = async () => {
         unit=""
         color="bg-purple-500"
       />
+
+      <SensorCard
+        title="Health Status"
+        value={data.status}
+        unit=""
+        color="bg-orange-500"
+      />
     </div>
   );
 }
